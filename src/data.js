@@ -1,7 +1,7 @@
 const data = {
   products: [
     {
-      id: 1,
+      _id: "1",
       name: "Slim Shirt",
       category: "shirts",
       image: "/images/Park-Avenue-Shirt.jpg",
@@ -11,7 +11,7 @@ const data = {
       numReviews: 10,
     },
     {
-      id: 2,
+      _id: "2",
       name: "Fit Shirt",
       category: "shirts",
       image: "/images/Park-Avenue-Shirt.jpg",
@@ -21,7 +21,7 @@ const data = {
       numReviews: 15,
     },
     {
-      id: 3,
+      _id: "3",
       name: "Long Pants",
       category: "pants",
       image: "/images/Park-Avenue-Shirt.jpg",
@@ -31,7 +31,7 @@ const data = {
       numReviews: 13,
     },
     {
-      id: 4,
+      _id: "4",
       name: "Baggy Jeans",
       category: "pants",
       image: "/images/Park-Avenue-Shirt.jpg",

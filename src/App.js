@@ -1,5 +1,7 @@
 import "./App.css";
-import data from "./data";
+import HomePage from "./Pages/HomePage";
+import ProductPage from "./Pages/ProductPage";
+import { Switch, Route, Link } from "react-router-dom";
 
 function App() {
   const openMenu = () => {
@@ -19,45 +21,28 @@ function App() {
           </button>
           <ul>
             <li>
-              <a href="/index.html">Pants</a>
+              <Link to="/products/pants">Pants</Link>
             </li>
             <li>
-              <a href="/index.html">Shirts</a>
+              <Link to="/products/shirts">Shirts</Link>
             </li>
           </ul>
         </aside>
         <div className="brand">
           <button onClick={openMenu}>&#8801;</button>
-          <a href="/index.html">Amazzon</a>
+          <Link to="/">Amazzon</Link>
         </div>
         <div className="header-links">
-          <a href="/cart.html">Cart</a>
-          <a href="/signin.html">Sign In</a>
+          <Link to="/cart.html">Cart</Link>
+          <Link to="/signin.html">Sign In</Link>
         </div>
       </header>
       <main className="main">
         <div className="content">
-          <ul className="products">
-            {data.products.map((product) => (
-              <li key={product.id}>
-                <div className="product">
-                  <img
-                    className="product-image"
-                    src={product.image}
-                    alt={product.name}
-                  />
-                  <div className="product-name">
-                    <a href="/product.html">{product.name}</a>
-                  </div>
-                  <div className="product-brand">{product.brand}</div>
-                  <div className="product-price">${product.price}</div>
-                  <div className="product-rating">
-                    stars ({product.numReviews} Reviews)
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <Switch>
+            <Route exact path="/products/:id" component={ProductPage} />
+            <Route exact path="/" component={HomePage} />
+          </Switch>
         </div>
       </main>
       <footer className="footer">All Rights Reserved &copy;</footer>
