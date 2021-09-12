@@ -1,10 +1,21 @@
-import React from "react";
-import data from "./../data";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getSingleProduct } from "../redux/productReducer";
 
 const ProductPage = ({ match }) => {
-  const product = data.products.find((pro) => pro._id === match.params.id);
-  return (
+  const dispatch = useDispatch();
+  const productDetail = useSelector((state) => state.productDetail);
+  const { product, loading, error } = productDetail;
+  useEffect(() => {
+    dispatch(getSingleProduct(match.params.id));
+  }, []);
+
+  return loading ? (
+    <div>Loading...</div>
+  ) : error ? (
+    <div>{error}</div>
+  ) : (
     <div>
       <div className="back-btn">
         <Link to="/">Back to products</Link>

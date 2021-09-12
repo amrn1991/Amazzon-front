@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { listProducts } from "./../redux/reducer";
+import { listProducts } from "./../redux/productsReducer";
 
 const HomePage = () => {
-  const { products, loading, error } = useSelector((state) => state);
+  const productsList = useSelector((state) => state.productsList);
+  const { products, loading, error } = productsList;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(listProducts());
-  }, [dispatch]);
+  }, []);
 
   return loading ? (
     <div>Loading...</div>
