@@ -1,6 +1,7 @@
 import "./App.css";
 import HomePage from "./Pages/HomePage";
 import ProductPage from "./Pages/ProductPage";
+import CartPage from "./Pages/CartPage";
 import { Switch, Route, Link } from "react-router-dom";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
         <div className="content">
           <Switch>
             <Route exact path="/products/:id" component={ProductPage} />
+            <Route exact path="/cart/:id?" component={CartPage} />
             <Route exact path="/" component={HomePage} />
           </Switch>
         </div>
