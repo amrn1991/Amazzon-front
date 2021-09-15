@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import Cookies from "js-cookie";
+
+const cartItems = JSON.parse(Cookies.get("cartItems")) || [];
 
 const cartSlice = createSlice({
   name: "cart",
-  initialState: { cart: [] },
+  initialState: { cart: cartItems },
   reducers: {
     itemAdded: (state, action) => {
       const index = state.cart.findIndex(
@@ -25,7 +28,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const addCartItem = (productId, qty) => async (dispatch) => {
+export const addCartItem = (productId, qty) => async (dispatch, getState) => {
   try {
     const { data } = await axios.get(`/api/products/${productId}`);
     dispatch(
@@ -38,6 +41,11 @@ export const addCartItem = (productId, qty) => async (dispatch) => {
         qty,
       })
     );
+    const {
+      cartList: { cart },
+    } = getState();
+    Cookies.set("cartItems", JSON.stringify(cart), { secure: true });
+    console.log(getState())
   } catch (error) {
     dispatch(cartError(error.message));
   }
