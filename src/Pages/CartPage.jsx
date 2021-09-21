@@ -13,7 +13,7 @@ const CartPage = ({ match, location, history }) => {
     if (productId) {
       dispatch(addCartItem(productId, qty));
     }
-  }, []);
+  }, [productId, qty]);
 
   const removeFromCart = (productId) => {
     dispatch(itemRemoved(productId));
@@ -73,8 +73,8 @@ const CartPage = ({ match, location, history }) => {
       </div>
       <div className="cart-actions">
         <h3>
-          Subtotal ({cart.reduce((a, c) => Number(a + c.qty), 0)} items) : ${" "}
-          {cart.reduce((a, c) => a + c.price * c.qty, 0)}
+          Subtotal ({cart.reduce((a, c) => Number(a) + Number(c.qty), 0)} items)
+          : $ {cart.reduce((a, c) => a + c.price * c.qty, 0)}
         </h3>
         <button
           className="button primary full-width"

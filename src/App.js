@@ -2,7 +2,9 @@ import "./App.css";
 import HomePage from "./Pages/HomePage";
 import ProductPage from "./Pages/ProductPage";
 import CartPage from "./Pages/CartPage";
+import SigninPage from "./Pages/SigninPage";
 import { Switch, Route, Link } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 function App() {
   const openMenu = () => {
@@ -11,6 +13,8 @@ function App() {
   const closeMenu = () => {
     document.querySelector(".sidebar").classList.remove("open");
   };
+
+  const {usersInfo} = useSelector(state => state.usersList)
 
   return (
     <div className="grid-container">
@@ -34,13 +38,18 @@ function App() {
           <Link to="/">Amazzon</Link>
         </div>
         <div className="header-links">
-          <Link to="/cart.html">Cart</Link>
-          <Link to="/signin.html">Sign In</Link>
+          <Link to="/cart">Cart</Link>
+          {
+            usersInfo 
+            ? <Link to="/profile">{usersInfo.name}</Link>
+            : <Link to="/signin">Sign In</Link>
+          }
         </div>
       </header>
       <main className="main">
         <div className="content">
           <Switch>
+            <Route exact path="/signin" component={SigninPage} />
             <Route exact path="/products/:id" component={ProductPage} />
             <Route exact path="/cart/:id?" component={CartPage} />
             <Route exact path="/" component={HomePage} />

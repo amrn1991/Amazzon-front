@@ -1,6 +1,6 @@
 {
   "name": "front-end",
-  "proxy": "http://127.0.0.1:5500",
+  "proxy": "http://localhost:5500",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

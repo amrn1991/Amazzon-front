@@ -205,6 +205,12 @@ button {
 .button.primary {
   background: #f0c040;
 }
+.button.secondary {
+  background: var(--light);
+}
+.text-center{
+  text-align: center;
+}
 
 /* Cart */
 .cart {
@@ -255,4 +261,30 @@ button {
 }
 .full-width {
   width: 100%;
+}
+
+/* Sign in page */
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 20rem;
+  padding: 1.4rem;
+  border: 0.1rem solid var(--light);
+  border-radius: 0.3rem;
+}
+.form-container li {
+  display: flex;
+  flex-direction: column;
+  margin: 0.7rem 0;
+}
+.form-container li input {
+  padding: 0.7rem;
+  border: 0.1rem solid var(--shade);
+  border-radius: 0.3rem;
 }
