@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import ProductPage from "./Pages/ProductPage";
 import CartPage from "./Pages/CartPage";
 import SigninPage from "./Pages/SigninPage";
+import RegisterPage from './Pages/RegisterPage';
 import { Switch, Route, Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
@@ -50,6 +51,7 @@ function App() {
         <div className="content">
           <Switch>
             <Route exact path="/signin" component={SigninPage} />
+            <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/products/:id" component={ProductPage} />
             <Route exact path="/cart/:id?" component={CartPage} />
             <Route exact path="/" component={HomePage} />
