@@ -1,6 +1,7 @@
 import "./App.css";
 import HomePage from "./Pages/HomePage";
 import ProductPage from "./Pages/ProductPage";
+import ProductsPage from "./Pages/ProductsPage";
 import CartPage from "./Pages/CartPage";
 import SigninPage from "./Pages/SigninPage";
 import RegisterPage from './Pages/RegisterPage';
@@ -52,6 +53,7 @@ function App() {
           <Switch>
             <Route exact path="/signin" component={SigninPage} />
             <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/products" component={ProductsPage} />
             <Route exact path="/products/:id" component={ProductPage} />
             <Route exact path="/cart/:id?" component={CartPage} />
             <Route exact path="/" component={HomePage} />

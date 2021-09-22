@@ -43,6 +43,7 @@ li {
 }
 button {
   font-size: 1rem;
+  margin: .2rem;
 }
 /* header */
 .header {
@@ -198,6 +199,7 @@ button {
   border: 0.1rem solid var(--shade);
   cursor: pointer;
   border-radius: 0.3rem;
+  margin: .3rem;
 }
 .button:hover {
   border: 0.05rem solid var(--shade2);
@@ -287,4 +289,25 @@ button {
   padding: 0.7rem;
   border: 0.1rem solid var(--shade);
   border-radius: 0.3rem;
+}
+
+/* products page */
+.product-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.content-margined{
+  margin: .7rem;
+}
+
+.table{
+  width: 100%;
+}
+.table th{
+  text-align: left;
+}
+tbody>tr:nth-child(odd){
+  background: var(--light);
+
 }
