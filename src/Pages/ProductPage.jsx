@@ -18,6 +18,7 @@ const ProductPage = ({ match, history }) => {
 
   useEffect(() => {
     dispatch(getSingleProduct(match.params.id));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return loading ? (

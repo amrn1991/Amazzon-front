@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { register } from "./../redux/registerReducer";
 
-const RegisterPage = ({ history }) => {
+const RegisterPage = ({ history, location }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,10 +17,13 @@ const RegisterPage = ({ history }) => {
     dispatch(register(name, email, password));
   };
 
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
   useEffect(() => {
     if (usersInfo !== null) {
-      history.push("/");
+      history.push(redirect);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersInfo]);
 
   return (
@@ -37,7 +40,7 @@ const RegisterPage = ({ history }) => {
           <li>
             <label htmlFor="name">Name</label>
             <input
-              type="name"
+              type="text"
               id="name"
               name="name"
               onChange={(e) => setName(e.target.value)}
@@ -64,7 +67,7 @@ const RegisterPage = ({ history }) => {
           <li>
             <label htmlFor="repass">Re-Enter Password</label>
             <input
-              type="repass"
+              type="password"
               id="repass"
               name="repass"
               onChange={(e) => setRepass(e.target.value)}
@@ -77,8 +80,11 @@ const RegisterPage = ({ history }) => {
           </li>
           <li>
             Already have an account?
-            <Link to="/signin" className="button secondary text-center">
-              Sign-In
+            <Link
+              to={redirect === "/" ? "signin" : `signin?redirect=${redirect}`}
+              className="button secondary text-center"
+            >
+              Sign In
             </Link>
           </li>
         </ul>

@@ -13,7 +13,8 @@ const CartPage = ({ match, location, history }) => {
     if (productId) {
       dispatch(addCartItem(productId, qty));
     }
-  }, [productId, qty]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const removeFromCart = (productId) => {
     dispatch(itemRemoved(productId));

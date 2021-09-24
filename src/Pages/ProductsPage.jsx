@@ -15,17 +15,15 @@ const ProductsPage = () => {
   const [countInStock, setCountInStock] = useState("");
   const [modalShow, setModalShow] = useState(false);
 
-  const { loading, products, error } = useSelector(
-    (state) => state.productsList
-  );
+  const { products } = useSelector((state) => state.productsList);
   const {
     loading: loadingSave,
     error: errorSave,
     success: successSave,
   } = useSelector((state) => state.savedProduct);
   const {
-    loading: loadingDelete,
-    error: errorDelete,
+    // loading: loadingDelete,
+    // error: errorDelete,
     success: successDelete,
   } = useSelector((state) => state.deleteProduct);
   const dispatch = useDispatch();
@@ -62,8 +60,11 @@ const ProductsPage = () => {
   };
 
   useEffect(() => {
-    if (successSave) {setModalShow(false)};
+    if (successSave) {
+      setModalShow(false);
+    }
     dispatch(listProducts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successSave, successDelete]);
 
   return (

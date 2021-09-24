@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { signinHandle } from "./../redux/usersReducer";
 
-const SigninPage = ({ history }) => {
+const SigninPage = ({ history, location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -15,10 +15,13 @@ const SigninPage = ({ history }) => {
     dispatch(signinHandle(email, password));
   };
 
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
   useEffect(() => {
     if (usersInfo !== null) {
-      history.push("/");
+      history.push(redirect);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersInfo]);
 
   return (
@@ -57,7 +60,12 @@ const SigninPage = ({ history }) => {
           </li>
           <li>new to Amazzon?</li>
           <li>
-            <Link to="/register" className="button secondary text-center">
+            <Link
+              to={
+                redirect === "/" ? "register" : `register?redirect=${redirect}`
+              }
+              className="button secondary text-center"
+            >
               Create an account
             </Link>
           </li>

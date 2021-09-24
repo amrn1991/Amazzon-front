@@ -2,11 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const cartItems = Cookies.get("cartItems") ? JSON.parse(Cookies.get("cartItems")) : [];
+// const cartItems = Cookies.get("cartItems") ? JSON.parse(Cookies.get("cartItems")) : [];
 
-const cartSlice = createSlice({
-  name: "cart",
-  initialState: { cart: cartItems, shipping:{}, payment:{} },
+const ShippingSlice = createSlice({
+  name: "shipping",
+  initialState: { },
   reducers: {
     itemAdded: (state, action) => {
       const index = state.cart.findIndex(
@@ -25,12 +25,6 @@ const cartSlice = createSlice({
     cartError: (state, action) => {
       state.error = action.payload;
     },
-    shippingSuccess: (state, action) => {
-      state.shipping = action.payload;
-    },
-    paymentSuccess: (state, action) => {
-      state.payment = action.payload;
-    }
   },
 });
 
@@ -56,13 +50,5 @@ export const addCartItem = (productId, qty) => async (dispatch, getState) => {
   }
 };
 
-export const saveShipping = (info) => (dispatch) =>{
-  dispatch(shippingSuccess(info))
-}
-
-export const savePayment = (info) => (dispatch) =>{
-  dispatch(paymentSuccess(info))
-}
-
-export const { itemAdded, itemRemoved, cartError, shippingSuccess, paymentSuccess } = cartSlice.actions;
+export const { itemAdded, itemRemoved, cartError } = cartSlice.actions;
 export default cartSlice.reducer;
