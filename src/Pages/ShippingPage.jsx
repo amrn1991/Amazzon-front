@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { saveShipping } from "../redux/cartReducer";
-import CheckoutSteps from "./../comps/CheckoutSteps";
+import CheckoutSteps from "../comps/CheckoutSteps";
 
-const RegisterPage = ({ history, location }) => {
+const ShippingPage = ({ history }) => {
+  const [fullName, setFullName] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
@@ -13,7 +14,7 @@ const RegisterPage = ({ history, location }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(saveShipping({ address, city, postalCode, country }));
+    dispatch(saveShipping({ fullName, address, city, postalCode, country }));
     history.push('payment')
   };
 
@@ -25,6 +26,15 @@ const RegisterPage = ({ history, location }) => {
           <ul className="form-container">
             <li>
               <h2>Shipping</h2>
+            </li>
+            <li>
+              <label htmlFor="fullName">Name</label>
+              <input
+                type="text"
+                id="fullName"
+                name="fullName"
+                onChange={(e) => setFullName(e.target.value)}
+              />
             </li>
             <li>
               <label htmlFor="address">Address</label>
@@ -75,4 +85,4 @@ const RegisterPage = ({ history, location }) => {
   );
 };
 
-export default RegisterPage;
+export default ShippingPage;

@@ -25,7 +25,11 @@ export const getSingleProduct = (productId) => async (dispatch) => {
     const { data } = await axios.get(`/api/products/${productId}`);
     dispatch(productSuccess(data));
   } catch (error) {
-    dispatch(productError(error.message));
+    const log =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch(productError(log));
   }
 };
 

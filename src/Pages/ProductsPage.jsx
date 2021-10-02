@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "./../redux/productsReducer";
-import { saveProduct } from "./../redux/productSaveReducer";
-import { deleteProduct } from "./../redux/productDeleteReducer";
+import { listProducts } from "../redux/productsReducer";
+import { saveProduct } from "../redux/productSaveReducer";
+import { deleteProduct } from "../redux/productDeleteReducer";
+import LoadingBox from "../comps/LaodingBox";
+import AlertBox from "../comps/AlertBox";
 
 const ProductsPage = () => {
   const [id, setId] = useState("");
@@ -21,11 +23,9 @@ const ProductsPage = () => {
     error: errorSave,
     success: successSave,
   } = useSelector((state) => state.savedProduct);
-  const {
-    // loading: loadingDelete,
-    // error: errorDelete,
-    success: successDelete,
-  } = useSelector((state) => state.deleteProduct);
+  const { success: successDelete } = useSelector(
+    (state) => state.deleteProduct
+  );
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
@@ -64,8 +64,8 @@ const ProductsPage = () => {
       setModalShow(false);
     }
     dispatch(listProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successSave, successDelete]);
+    
+  }, [dispatch, successSave, successDelete]);
 
   return (
     <div className="content content-margined">
@@ -83,8 +83,8 @@ const ProductsPage = () => {
                 <h2>Create Product</h2>
               </li>
               <li>
-                {loadingSave && <div>Loading...</div>}
-                {errorSave && <div>{errorSave}</div>}
+                {loadingSave && <LoadingBox />}
+                {errorSave && <AlertBox>{errorSave}</AlertBox>}
               </li>
               <li>
                 <label htmlFor="name">Name</label>

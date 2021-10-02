@@ -1,54 +1,31 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrder } from "../redux/ordersReducer";
-import CheckoutSteps from "../comps/CheckoutSteps";
 import LoadingBox from "../comps/LaodingBox";
 import AlertBox from "./../comps/AlertBox";
+import { orderDetails } from "./../redux/orderDetailsReducer";
 
-const OrderPage = ({ history }) => {
-  const { cart, shipping, payment } = useSelector((state) => state.cartList);
-
-  if (!shipping.address) {
-    history.push("/shipping");
-  } else if (!payment) {
-    history.push("/payment");
-  }
-
-  const { loading, success, error, order } = useSelector(
-    (state) => state.orderList
-  );
-
-  const itemsPrice = cart.reduce((a, c) => a + c.qty * c.price, 0);
-  const shippingPrice = itemsPrice > 100 ? 0 : 10;
-  const taxPrice = 0.15 * itemsPrice;
-  const totalPrice = itemsPrice + shippingPrice + taxPrice;
-
+const OrderDetailsPage = ({ match }) => {
   const dispatch = useDispatch();
-  const placeOrderHandler = () => {
-    dispatch(
-      createOrder({
-        orderItems: cart,
-        shipping,
-        payment,
-        itemsPrice,
-        shippingPrice,
-        taxPrice,
-        totalPrice,
-      })
-    );
-  };
+  const {
+    order: orderInfo,
+    loading,
+    error,
+  } = useSelector((state) => state.orderDetails);
+  const { shipping, orderItems, payment } = orderInfo;
+  const orderId = match.params.id;
 
   useEffect(() => {
-    if (success) {
-      history.push(`/order/${order._id}`);
-    }
-  }, [success, order]);
+    dispatch(orderDetails(orderId));
+  }, [dispatch, orderId]);
 
-  return (
+  return loading ? (
+    <LoadingBox />
+  ) : error ? (
+    <AlertBox>{error}</AlertBox>
+  ) : (
     <div>
-      <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
-
+      <h2>Order {orderInfo._id}</h2>
       <div className="order">
         <div className="order-info">
           <div>
@@ -60,11 +37,22 @@ const OrderPage = ({ history }) => {
               {shipping.address},{shipping.city},{shipping.postalCode},
               {shipping.country}
             </div>
-            
+            {orderInfo.isDelivered ? (
+              <AlertBox variant="success">
+                Delivered at {orderInfo.deliveredAt}
+              </AlertBox>
+            ) : (
+              <AlertBox>Not Delivered</AlertBox>
+            )}
           </div>
           <div>
             <h3>Payment</h3>
             <div>{payment}</div>
+            {orderInfo.isPaid ? (
+              <AlertBox variant="success">Paid at {orderInfo.paidAt}</AlertBox>
+            ) : (
+              <AlertBox>Not Paid</AlertBox>
+            )}
           </div>
           <div>
             <ul className="order-list-container">
@@ -72,10 +60,10 @@ const OrderPage = ({ history }) => {
                 <h3>Shopping Cart</h3>
                 <div className="price">price</div>
               </li>
-              {cart.length === 0 ? (
-                <AlertBox variant="info">Cart is empty</AlertBox>
+              {orderItems.length === 0 ? (
+                <AlertBox variant="success">cart is empty</AlertBox>
               ) : (
-                cart.map((item) => (
+                orderItems.map((item) => (
                   <li key={item.product}>
                     <div className="cart-image">
                       <img src={item.image} alt={item.name} />
@@ -98,35 +86,23 @@ const OrderPage = ({ history }) => {
         <div className="order-actions">
           <ul>
             <li>
-              <button
-                onClick={placeOrderHandler}
-                className="button primary full-width"
-              >
-                Place Order
-              </button>
-            </li>
-            <li>
               <h3>Order Summary</h3>
             </li>
             <li>
               <div>Items</div>
-              <div>${itemsPrice}</div>
+              <div>${orderInfo.itemsPrice}</div>
             </li>
             <li>
               <div>Shipping</div>
-              <div>${shippingPrice}</div>
+              <div>${orderInfo.shippingPrice}</div>
             </li>
             <li>
               <div>Tax</div>
-              <div>${taxPrice}</div>
+              <div>${orderInfo.taxPrice}</div>
             </li>
             <li>
               <div>Order Total</div>
-              <div>${totalPrice}</div>
-            </li>
-            <li>
-              {loading && <LoadingBox />}
-              {error && <AlertBox>{error}</AlertBox>}
+              <div>${orderInfo.totalPrice}</div>
             </li>
           </ul>
         </div>
@@ -135,4 +111,4 @@ const OrderPage = ({ history }) => {
   );
 };
 
-export default OrderPage;
+export default OrderDetailsPage;

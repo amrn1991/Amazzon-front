@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { register } from "./../redux/registerReducer";
+import { register } from "../redux/registerReducer";
+import LoadingBox from "../comps/LaodingBox";
+import AlertBox from "../comps/AlertBox";
 
 const RegisterPage = ({ history, location }) => {
   const [name, setName] = useState("");
@@ -14,7 +16,11 @@ const RegisterPage = ({ history, location }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(register(name, email, password));
+    if (password !== repass) {
+      alert("passwords do not match!");
+    } else {
+      dispatch(register(name, email, password));
+    }
   };
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -23,8 +29,7 @@ const RegisterPage = ({ history, location }) => {
     if (usersInfo !== null) {
       history.push(redirect);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersInfo]);
+  }, [usersInfo, history, redirect]);
 
   return (
     <div className="form">
@@ -34,8 +39,8 @@ const RegisterPage = ({ history, location }) => {
             <h2>Register</h2>
           </li>
           <li>
-            {loading && <div>Loading...</div>}
-            {error && <div>{error}</div>}
+            {loading && <LoadingBox />}
+            {error && <AlertBox>{error}</AlertBox>}
           </li>
           <li>
             <label htmlFor="name">Name</label>

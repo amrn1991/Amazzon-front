@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
+import { signoutHandle } from "../redux/usersReducer";
+import { emptyCart } from "../redux/cartReducer";
 
 const Header = () => {
   const openMenu = () => {
@@ -10,8 +12,14 @@ const Header = () => {
     document.querySelector(".sidebar").classList.remove("open");
   };
 
-  const {usersInfo} = useSelector(state => state.usersList)
+  const dispatch = useDispatch();
+  const handleSignout = () => {
+    dispatch(signoutHandle());
+    dispatch(emptyCart());
+  };
 
+  const { usersInfo } = useSelector((state) => state.usersList);
+  const { cart } = useSelector((state) => state.cartList);
   return (
     <header className="header">
       <aside className="sidebar">
@@ -33,9 +41,23 @@ const Header = () => {
         <Link to="/">Amazzon</Link>
       </div>
       <div className="header-links">
-        <Link to="/cart">Cart</Link>
+        <Link to="/cart">
+          Cart
+          {cart.length > 0 ? (
+            <span className="badge">{cart.length}</span>
+          ) : null}
+        </Link>
         {usersInfo ? (
-          <Link to="/profile">{usersInfo.name}</Link>
+          <div className="dropdown">
+            <Link to="/">
+              {usersInfo.name} <i>&#9660;</i>
+            </Link>
+            <div className="dropdown-content">
+              <Link to="#signout" onClick={handleSignout}>
+                Sign out
+              </Link>
+            </div>
+          </div>
         ) : (
           <Link to="/signin">Sign In</Link>
         )}

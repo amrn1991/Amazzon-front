@@ -6,6 +6,8 @@ import usersReducer from "./usersReducer";
 import registerReducer from "./registerReducer";
 import productSaveReducer from "./productSaveReducer";
 import productDeleteReducer from "./productDeleteReducer";
+import ordersReducer from "./ordersReducer";
+import orderDetailsReducer from "./orderDetailsReducer";
 
 export default combineReducers({
   productsList: productsReducer,
@@ -14,5 +16,7 @@ export default combineReducers({
   usersList: usersReducer,
   registerList: registerReducer,
   savedProduct: productSaveReducer,
-  deleteProduct: productDeleteReducer
+  deleteProduct: productDeleteReducer,
+  orderList: ordersReducer,
+  orderDetails: orderDetailsReducer,
 });

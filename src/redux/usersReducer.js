@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 const loggedInUser = Cookies.get("usersInfo")
   ? JSON.parse(Cookies.get("usersInfo"))
-  : null ;
+  : null;
 
 const usersSlice = createSlice({
   name: "users",
@@ -20,6 +20,9 @@ const usersSlice = createSlice({
     usersFail: (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    },
+    userSignout: (state) => {
+      state.usersInfo = null;
     },
   },
 });
@@ -37,9 +40,19 @@ export const signinHandle = (email, password) => async (dispatch) => {
       expires: 0.5,
     });
   } catch (error) {
-    dispatch(usersFail(error.message));
+    const log =
+      error.response && error.response.data.msg
+        ? error.response.data.msg
+        : error.message;
+    dispatch(usersFail(log));
   }
 };
 
-export const { usersRequest, usersSuccess, usersFail } = usersSlice.actions;
+export const signoutHandle = () => (dispatch) => {
+  Cookies.remove("usersInfo");
+  dispatch(userSignout());
+};
+
+export const { usersRequest, usersSuccess, usersFail, userSignout } =
+  usersSlice.actions;
 export default usersSlice.reducer;

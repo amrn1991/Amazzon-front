@@ -2,15 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProduct } from "../redux/productReducer";
+import Ratings from "../comps/Ratings";
+import AlertBox from "../comps/AlertBox";
+import LoadingBox from "../comps/LaodingBox";
 
 const ProductPage = ({ match, history }) => {
-  const dispatch = useDispatch();
   const { product, loading, error } = useSelector(
     (state) => state.productDetail
   );
+  const [qty, setQty] = useState(1);
+  const dispatch = useDispatch();
+
   const { name, image, price, numReviews, description, rating, countInStock } =
     product;
-  const [qty, setQty] = useState(1);
 
   const addToCart = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
@@ -18,13 +22,12 @@ const ProductPage = ({ match, history }) => {
 
   useEffect(() => {
     dispatch(getSingleProduct(match.params.id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, match.params.id]);
 
   return loading ? (
-    <div>Loading...</div>
+    <LoadingBox />
   ) : error ? (
-    <div>{error}</div>
+    <AlertBox>{error}</AlertBox>
   ) : (
     <div>
       <div className="back-btn">
@@ -40,7 +43,7 @@ const ProductPage = ({ match, history }) => {
               <h4>{name}</h4>
             </li>
             <li>
-              {rating} Stars ({numReviews} Reviews)
+              <Ratings rating={rating} numReviews={numReviews} />
             </li>
             <li>
               <em>${price}</em>
@@ -51,7 +54,7 @@ const ProductPage = ({ match, history }) => {
         <div className="details-action">
           <ul>
             <li>Price: ${price}</li>
-            <li>Status: {countInStock>0 ? "in stock" : "unavailable"}</li>
+            <li>Status: {countInStock > 0 ? "in stock" : "unavailable"}</li>
             <li>
               Qty:{" "}
               <select value={qty} onChange={(e) => setQty(e.target.value)}>

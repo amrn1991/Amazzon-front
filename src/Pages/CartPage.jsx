@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addCartItem, itemRemoved } from "../redux/cartReducer";
+import AlertBox from "./../comps/AlertBox";
 
 const CartPage = ({ match, location, history }) => {
   const productId = match.params.id;
@@ -13,8 +14,7 @@ const CartPage = ({ match, location, history }) => {
     if (productId) {
       dispatch(addCartItem(productId, qty));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, productId, qty]);
 
   const removeFromCart = (productId) => {
     dispatch(itemRemoved(productId));
@@ -33,7 +33,7 @@ const CartPage = ({ match, location, history }) => {
             <div className="price">price</div>
           </li>
           {cart.length === 0 ? (
-            <div>Cart is empty</div>
+            <AlertBox variant="info">Cart is empty!</AlertBox>
           ) : (
             cart.map((item) => (
               <li key={item.product}>

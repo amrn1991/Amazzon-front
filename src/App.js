@@ -1,15 +1,18 @@
 import "./App.css";
-import Header from './comps/Header';
-import HomePage from "./Pages/HomePage";
-import ProductPage from "./Pages/ProductPage";
-import ProductsPage from "./Pages/ProductsPage";
-import CartPage from "./Pages/CartPage";
-import SigninPage from "./Pages/SigninPage";
-import RegisterPage from './Pages/RegisterPage';
-import ShippingPage from './Pages/ShippingPage';
-import PaymentPage from './Pages/PaymentPage';
+import Header from "./comps/Header";
+import {
+  HomePage,
+  CartPage,
+  ProductPage,
+  ProductsPage,
+  OrderPage,
+  RegisterPage,
+  PaymentPage,
+  SigninPage,
+  ShippingPage,
+  OrderDetailsPage
+} from "./pages";
 import { Switch, Route } from "react-router-dom";
-import OrderPage from './Pages/OrderPage';
 
 function App() {
   return (
@@ -26,6 +29,7 @@ function App() {
             <Route exact path="/shipping" component={ShippingPage} />
             <Route exact path="/payment" component={PaymentPage} />
             <Route exact path="/placeorder" component={OrderPage} />
+            <Route exact path="/order/:id" component={OrderDetailsPage} />
             <Route exact path="/" component={HomePage} />
           </Switch>
         </div>

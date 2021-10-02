@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { signinHandle } from "./../redux/usersReducer";
+import LoadingBox from "./../comps/LaodingBox";
+import AlertBox from "./../comps/AlertBox";
 
 const SigninPage = ({ history, location }) => {
   const [email, setEmail] = useState("");
@@ -21,8 +23,7 @@ const SigninPage = ({ history, location }) => {
     if (usersInfo !== null) {
       history.push(redirect);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersInfo]);
+  }, [usersInfo, history, redirect]);
 
   return (
     <div className="form">
@@ -32,8 +33,8 @@ const SigninPage = ({ history, location }) => {
             <h2>Sign-In</h2>
           </li>
           <li>
-            {loading && <div>Loading...</div>}
-            {error && <div>{error}</div>}
+            {loading && <LoadingBox />}
+            {error && <AlertBox>{error}</AlertBox>}
           </li>
           <li>
             <label htmlFor="email">Email</label>

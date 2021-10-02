@@ -1,44 +1,31 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import Product from "../comps/Product";
 import { useSelector, useDispatch } from "react-redux";
-import { listProducts } from "./../redux/productsReducer";
+import { listProducts } from "../redux/productsReducer";
+import LoadingBox from "../comps/LaodingBox"
+import AlertBox from "../comps/AlertBox"
 
 const HomePage = () => {
-  const productsList = useSelector((state) => state.productsList);
-  const { products, loading, error } = productsList;
+  const { products, loading, error } = useSelector(
+    (state) => state.productsList
+  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(listProducts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return loading ? (
-    <div>Loading...</div>
+    <LoadingBox />
   ) : error ? (
-    <div>{error}</div>
+    <AlertBox>{error}</AlertBox>
   ) : (
     <div>
       <ul className="products">
         {products.map((product) => (
           <li key={product._id}>
-            <div className="product">
-              <Link to={`/products/${product._id}`}>
-                <img
-                  className="product-image"
-                  src={product.image}
-                  alt={product.name}
-                />
-              </Link>
-              <div className="product-name">
-                <Link to={`/products/${product._id}`}>{product.name}</Link>
-              </div>
-              <div className="product-brand">{product.brand}</div>
-              <div className="product-price">${product.price}</div>
-              <div className="product-rating">
-                stars ({product.numReviews} Reviews)
-              </div>
-            </div>
+            <Product product={product} />
           </li>
         ))}
       </ul>
