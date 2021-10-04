@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import Product from "../comps/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { listProducts } from "../redux/productsReducer";
-import LoadingBox from "../comps/LaodingBox"
-import AlertBox from "../comps/AlertBox"
+import Product from "../comps/Product";
+import LoadingBox from "../comps/LaodingBox";
+import AlertBox from "../comps/AlertBox";
 
 const HomePage = () => {
   const { products, loading, error } = useSelector(

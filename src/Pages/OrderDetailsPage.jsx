@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { orderDetails } from "./../redux/orderDetailsReducer";
 import { PayPalButton } from "react-paypal-button-v2";
+import { orderPayReset, payOrder } from "./../redux/orderPayReducer";
 import LoadingBox from "../comps/LaodingBox";
 import AlertBox from "./../comps/AlertBox";
 import axios from "axios";
-import { orderPayReset, payOrder } from "./../redux/orderPayReducer";
 
 const OrderDetailsPage = ({ match }) => {
   const [sdkReady, setSdkReady] = useState(false);
