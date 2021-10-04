@@ -39,7 +39,6 @@ export const createOrder = (ordered) => async (dispatch, getState) => {
     });
 
     dispatch(orderSuccess(data.data));
-    //dispatch(orderEmpty());
   } catch (error) {
     const log =
       error.response && error.response.data.message

@@ -1,11 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { orderDetails } from "./../redux/orderDetailsReducer";
+import { PayPalButton } from "react-paypal-button-v2";
 import LoadingBox from "../comps/LaodingBox";
 import AlertBox from "./../comps/AlertBox";
-import { orderDetails } from "./../redux/orderDetailsReducer";
+import axios from "axios";
+import { orderPayReset, payOrder } from "./../redux/orderPayReducer";
 
 const OrderDetailsPage = ({ match }) => {
+  const [sdkReady, setSdkReady] = useState(false);
   const dispatch = useDispatch();
   const {
     order: orderInfo,
@@ -13,18 +17,49 @@ const OrderDetailsPage = ({ match }) => {
     error,
   } = useSelector((state) => state.orderDetails);
   const { shipping, orderItems, payment } = orderInfo;
+  const {
+    loading: loadingPay,
+    error: errorPay,
+    success: successPay,
+  } = useSelector((state) => state.orderPay);
   const orderId = match.params.id;
 
   useEffect(() => {
-    dispatch(orderDetails(orderId));
-  }, [dispatch, orderId]);
+    const addPaypalScript = async () => {
+      const { data } = await axios.get("/api/config/paypal");
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
+      script.async = true;
+      script.onload = () => {
+        setSdkReady(true);
+      };
+      document.body.appendChild(script);
+    };
+    if (!orderInfo || successPay || orderInfo._id !== orderId) {
+      dispatch(orderPayReset());
+      dispatch(orderDetails(orderId));
+    } else {
+      if (!orderInfo.isPaid) {
+        if (!window.paypal) {
+          addPaypalScript();
+        } else {
+          setSdkReady(true);
+        }
+      }
+    }
+  }, [dispatch, orderId, orderInfo, sdkReady]);
+
+  const paymentSuccessHandler = (paymentResult) => {
+    dispatch(payOrder(orderInfo, paymentResult));
+  };
 
   return loading ? (
     <LoadingBox />
   ) : error ? (
     <AlertBox>{error}</AlertBox>
   ) : (
-    <div>
+    <div className="order-details">
       <h2>Order {orderInfo._id}</h2>
       <div className="order">
         <div className="order-info">
@@ -104,6 +139,22 @@ const OrderDetailsPage = ({ match }) => {
               <div>Order Total</div>
               <div>${orderInfo.totalPrice}</div>
             </li>
+            {!orderInfo.isPaid && (
+              <li>
+                {!sdkReady ? (
+                  <LoadingBox />
+                ) : (
+                  <div>
+                    {loadingPay && <LoadingBox />}
+                    {errorPay && <AlertBox>{errorPay}</AlertBox>}
+                    <PayPalButton
+                      amount={orderInfo.totalPrice}
+                      onSuccess={paymentSuccessHandler}
+                    ></PayPalButton>
+                  </div>
+                )}
+              </li>
+            )}
           </ul>
         </div>
       </div>

@@ -8,6 +8,7 @@ import productSaveReducer from "./productSaveReducer";
 import productDeleteReducer from "./productDeleteReducer";
 import ordersReducer from "./ordersReducer";
 import orderDetailsReducer from "./orderDetailsReducer";
+import orderPayReducer from "./orderPayReducer";
 
 export default combineReducers({
   productsList: productsReducer,
@@ -19,4 +20,5 @@ export default combineReducers({
   deleteProduct: productDeleteReducer,
   orderList: ordersReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer
 });

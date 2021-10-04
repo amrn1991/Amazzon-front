@@ -43,7 +43,7 @@ const OrderPage = ({ history }) => {
     if (success) {
       history.push(`/order/${order._id}`);
     }
-  }, [success, order]);
+  }, [success, order, history]);
 
   return (
     <div>
@@ -60,7 +60,6 @@ const OrderPage = ({ history }) => {
               {shipping.address},{shipping.city},{shipping.postalCode},
               {shipping.country}
             </div>
-            
           </div>
           <div>
             <h3>Payment</h3>
